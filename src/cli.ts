@@ -13,6 +13,7 @@ import {
 } from "./utils";
 
 interface CliArgs {
+  version: boolean;
   output: string;
   input: string;
   minzoom: number;
@@ -28,6 +29,7 @@ interface CliArgs {
 const { values } = parseArgs({
   args: Bun.argv.slice(2),
   options: {
+    version: { type: "boolean", short: "v" },
     output: { type: "string", short: "o", default: "output.mbtiles" },
     input: { type: "string", short: "i" },
     minzoom: { type: "string" },
@@ -44,6 +46,7 @@ const { values } = parseArgs({
 });
 
 const args: CliArgs = {
+  version: values.version as boolean,
   output: values.output as string,
   input: values.input as string,
   minzoom: parseInt(values.minzoom as string),
@@ -55,6 +58,11 @@ const args: CliArgs = {
   format: values.format as string,
   concurrency: parseInt(values.concurrency as string),
 };
+
+if (args.version) {
+  console.log("tile-packer v1.0.0");
+  process.exit(0);
+}
 
 if (!args.input || !args.bbox) {
   console.error(

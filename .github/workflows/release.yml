@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   release:
@@ -25,13 +25,6 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Build artifacts
-        run: |
-          bun build --compile --minify --target=bun-linux-x64-modern src/cli.ts --outfile tile-packer-linux-x64
-          bun build --compile --minify --target=bun-darwin-arm64 src/cli.ts --outfile tile-packer-macos-arm64
-          bun build --compile --minify --target=bun-darwin-x64-modern src/cli.ts --outfile tile-packer-macos-x64
-          bun build --compile --minify --target=bun-windows-x64-modern src/cli.ts --outfile tile-packer-windows-x64.exe
-
       - name: Upload release assets
         uses: googleapis/release-please-action@v4
         id: release
@@ -39,9 +32,42 @@ jobs:
           token: ${{ secrets.RELEASE_TOKEN }}
           release-type: node
 
+      - name: Build artifacts
+        run: |
+          bun build --compile --minify --target=bun-linux-x64-modern src/cli.ts --outfile tile-packer-linux-x64
+          bun build --compile --minify --target=bun-darwin-arm64 src/cli.ts --outfile tile-packer-macos-arm64
+          bun build --compile --minify --target=bun-darwin-x64-modern src/cli.ts --outfile tile-packer-macos-x64
+          bun build --compile --minify --target=bun-windows-x64-modern src/cli.ts --outfile tile-packer-windows-x64.exe
+
       - name: Upload Release Artifact
         if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           gh release upload ${{ steps.release.outputs.tag_name }} tile-packer-linux-x64 tile-packer-macos-arm64 tile-packer-macos-x64 tile-packer-windows-x64.exe
+
+      - name: Brew Release
+        if: ${{ steps.release.outputs.release_created }}
+        uses: Justintime50/homebrew-releaser@v1
+        with:
+          github_token: ${{ secrets.RELEASE_TOKEN }}
+          homebrew_owner: eknowles
+          homebrew_tap: tools
+          install: |
+            if Hardware::CPU.arm? && OS.mac?
+              bin.install "tile-packer-macos-arm64" => "tile-packer"
+            elsif Hardware::CPU.intel? && OS.mac?
+              bin.install "tile-packer-macos-x64" => "tile-packer"
+            elsif OS.linux?
+              bin.install "tile-packer-linux-x64" => "tile-packer"
+            end
+
+          test: 'assert_match("tile-packer ${{steps.release.outputs.tag_name}}", shell_output("#{bin}/tile-packer --version"))'
+
+          target_darwin_amd64: true
+          target_darwin_arm64: true
+          target_linux_amd64: true
+
+          update_readme_table: true
+
+          debug: false
