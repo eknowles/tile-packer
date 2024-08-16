@@ -25,7 +25,7 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Upload release assets
+      - name: Release
         uses: googleapis/release-please-action@v4
         id: release
         with:
