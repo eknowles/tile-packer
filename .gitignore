@@ -3,3 +3,4 @@
 *.mbtiles
 *.pmtiles
 test.sh
+node_modules
