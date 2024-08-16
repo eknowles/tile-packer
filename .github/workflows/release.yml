@@ -38,7 +38,6 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
           release-type: node
-          draft: false
 
       - name: Upload Release Artifact
         if: ${{ steps.release.outputs.release_created }}
