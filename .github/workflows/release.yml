@@ -34,10 +34,10 @@ jobs:
 
       - name: Upload release assets
         uses: googleapis/release-please-action@v4
+        id: release
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
           release-type: node
-          package-name: tile-packer
           draft: false
 
       - name: Upload Release Artifact
