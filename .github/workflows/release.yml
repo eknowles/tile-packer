@@ -33,13 +33,16 @@ jobs:
           bun build --compile --minify --target=bun-windows-x64-modern src/cli.ts --outfile tile-packer-windows-x64.exe
 
       - name: Upload release assets
-        uses: googleapis/release-please-action@v3
+        uses: googleapis/release-please-action@v4
         with:
+          token: ${{ secrets.RELEASE_TOKEN }}
           release-type: node
           package-name: tile-packer
           draft: false
-          artifact-files: |
-            tile-packer-linux-x64
-            tile-packer-macos-arm64
-            tile-packer-macos-x64
-            tile-packer-windows-x64.exe
+
+      - name: Upload Release Artifact
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          gh release upload ${{ steps.release.outputs.tag_name }} tile-packer-linux-x64 tile-packer-macos-arm64 tile-packer-macos-x64 tile-packer-windows-x64.exe
