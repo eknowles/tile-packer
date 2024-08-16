@@ -1,0 +1,4 @@
+*.lockb
+.husky/
+src/
+test.sh

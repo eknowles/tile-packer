@@ -1,0 +1,17 @@
+{
+  "name": "tile-packer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/bun": "^1.1.6",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.9",
+    "prettier": "^3.3.3"
+  },
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  }
+}

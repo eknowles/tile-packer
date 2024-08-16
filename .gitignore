@@ -1,0 +1,5 @@
+.idea
+*.iml
+*.mbtiles
+*.pmtiles
+test.sh
