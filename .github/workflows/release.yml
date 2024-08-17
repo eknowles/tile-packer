@@ -98,16 +98,14 @@ jobs:
           github_token: ${{ secrets.RELEASE_TOKEN }}
           homebrew_owner: eknowles
           homebrew_tap: homebrew-tools
-
           install: |
             if Hardware::CPU.arm? && OS.mac?
-              bin.install "tile-packer-#{version}-darwin-arm64/tile-packer" => "tile-packer"
+              bin.install "tile-packer" => "tile-packer"
             elsif Hardware::CPU.intel? && OS.mac?
-              bin.install "tile-packer-#{version}-darwin-amd64/tile-packer" => "tile-packer"
+              bin.install "tile-packer" => "tile-packer"
             elsif OS.linux?
-              bin.install "tile-packer-#{version}-linux-amd64/tile-packer" => "tile-packer"
+              bin.install "tile-packer" => "tile-packer"
             end
-
           test: 'assert_match("tile-packer #{version}", shell_output("#{bin}/tile-packer --version"))'
           target_darwin_amd64: true
           target_darwin_arm64: true
