@@ -98,6 +98,7 @@ jobs:
           github_token: ${{ secrets.RELEASE_TOKEN }}
           homebrew_owner: eknowles
           homebrew_tap: homebrew-tools
+          install: 'bin.install "tilepack" => "tilepack"'
           test: 'assert_match("tilepack #{version}", shell_output("#{bin}/tilepack --version"))'
           target_darwin_amd64: true
           target_darwin_arm64: true
