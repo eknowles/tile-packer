@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/eknowles/tilepack/compare/v1.2.2...v1.2.3) (2024-08-17)
+
+
+### Bug Fixes
+
+* release, add install ([139325e](https://github.com/eknowles/tilepack/commit/139325ee719fa33579004fa5b1f3a29b80fc2799))
+
 ## [1.2.2](https://github.com/eknowles/tilepack/compare/v1.2.1...v1.2.2) (2024-08-17)
 
 
