@@ -1,9 +1,4 @@
-# tile-packer
-
-Fetches XYZ tiles from a URL within a given zoom level range, creates an MBTiles
-file that can be converted into a PMTiles file.
-
-Supports custom headers, and concurrency control.
+# ❎ tile-packer ❎
 
 ## Installation
 
@@ -63,10 +58,6 @@ tile-packer \
   --header "Authorization: Bearer <token>" \
   --concurrency 20
 ```
-
-This command will fetch tiles from zoom level 5 to 13 within the specified
-bounding box, save them as `satellite.mbtiles`, and use 20 concurrent requests
-for fetching.
 
 ## Converting to PMTiles
 

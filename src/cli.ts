@@ -11,6 +11,7 @@ import {
   parseBoundingBox,
   BoundingBox,
 } from "./utils";
+import pkg from "../package.json";
 
 interface CliArgs {
   version: boolean;
@@ -60,7 +61,7 @@ const args: CliArgs = {
 };
 
 if (args.version) {
-  console.log("tile-packer v1.0.0");
+  console.log(`tile-packer ${pkg.version}`);
   process.exit(0);
 }
 
@@ -79,15 +80,17 @@ const headers: Record<string, string> = Object.fromEntries(
 const db = new Database(args.output);
 initializeDatabase(db);
 
+// https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md#content
 insertMetadata(
   db,
   "bounds",
   `${bbox.minLon},${bbox.minLat},${bbox.maxLon},${bbox.maxLat}`,
 );
+// todo add center
 insertMetadata(db, "maxzoom", args.maxzoom.toString());
 insertMetadata(db, "minzoom", args.minzoom.toString());
 insertMetadata(db, "name", "tile-packer");
-insertMetadata(db, "type", "overlay");
+insertMetadata(db, "type", "overlay"); // should this be baselayer?
 insertMetadata(db, "version", "1");
 insertMetadata(db, "format", args.format);
 

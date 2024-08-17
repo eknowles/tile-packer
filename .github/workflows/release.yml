@@ -13,9 +13,32 @@ on:
 
 jobs:
   release:
-    name: Build and Release
+    name: Generate Release
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: Release
+        uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          release-type: node
+
+      - name: Set version
+        id: version
+        if: ${{ steps.release.outputs.release_created }}
+        run: echo "VERSION=${{ steps.release.outputs.tag_name }}" | sed 's/^v//' >> $GITHUB_ENV
+
+  build_and_upload:
+    name: Build and Upload Artifacts
+    runs-on: ubuntu-latest
+    needs: release
+    if: needs.release.outputs.release_created == 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -25,49 +48,69 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Release
-        uses: googleapis/release-please-action@v4
-        id: release
-        with:
-          token: ${{ secrets.RELEASE_TOKEN }}
-          release-type: node
+      - name: Set version
+        run: echo "VERSION=${{ needs.release.outputs.tag_name }}" >> $GITHUB_ENV
 
-      - name: Build artifacts
+      - name: Build and package artifacts
         run: |
-          bun build --compile --minify --target=bun-linux-x64-modern src/cli.ts --outfile tile-packer-linux-x64
-          bun build --compile --minify --target=bun-darwin-arm64 src/cli.ts --outfile tile-packer-macos-arm64
-          bun build --compile --minify --target=bun-darwin-x64-modern src/cli.ts --outfile tile-packer-macos-x64
-          bun build --compile --minify --target=bun-windows-x64-modern src/cli.ts --outfile tile-packer-windows-x64.exe
+          declare -A targets=(
+            ["linux-x64"]="bun-linux-x64-modern"
+            ["darwin-arm64"]="bun-darwin-arm64"
+            ["darwin-amd64"]="bun-darwin-x64-modern"
+            ["windows-amd64"]="bun-windows-x64-modern"
+          )
+
+          for target in "${!targets[@]}"; do
+            bun build --compile --minify --target="${targets[$target]}" src/cli.ts --outfile "tile-packer"
+          
+            if [[ "$target" == "windows-amd64" ]]; then
+              mv tile-packer tile-packer.exe
+              tar -czvf "tile-packer-${VERSION}-${target}.tar.gz" tile-packer.exe
+            else
+              tar -czvf "tile-packer-${VERSION}-${target}.tar.gz" tile-packer
+            fi
+          done
 
       - name: Upload Release Artifact
-        if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
-          gh release upload ${{ steps.release.outputs.tag_name }} tile-packer-linux-x64 tile-packer-macos-arm64 tile-packer-macos-x64 tile-packer-windows-x64.exe
+          gh release upload ${{ needs.release.outputs.tag_name }} \
+            tile-packer-${VERSION}-linux-x64.tar.gz \
+            tile-packer-${VERSION}-darwin-arm64.tar.gz \
+            tile-packer-${VERSION}-darwin-amd64.tar.gz \
+            tile-packer-${VERSION}-windows-amd64.tar.gz
+
+  brew_release:
+    name: Homebrew Release
+    runs-on: ubuntu-latest
+    needs: build_and_upload
+    if: needs.release.outputs.release_created == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Brew Release
-        if: ${{ steps.release.outputs.release_created }}
         uses: Justintime50/homebrew-releaser@v1
         with:
+          commit_owner: eknowles
+          commit_email: 817611+eknowles@users.noreply.github.com
           github_token: ${{ secrets.RELEASE_TOKEN }}
           homebrew_owner: eknowles
-          homebrew_tap: tools
+          homebrew_tap: homebrew-tools
+
           install: |
             if Hardware::CPU.arm? && OS.mac?
-              bin.install "tile-packer-macos-arm64" => "tile-packer"
+              bin.install "tile-packer-#{version}-darwin-arm64/tile-packer" => "tile-packer"
             elsif Hardware::CPU.intel? && OS.mac?
-              bin.install "tile-packer-macos-x64" => "tile-packer"
+              bin.install "tile-packer-#{version}-darwin-amd64/tile-packer" => "tile-packer"
             elsif OS.linux?
-              bin.install "tile-packer-linux-x64" => "tile-packer"
+              bin.install "tile-packer-#{version}-linux-amd64/tile-packer" => "tile-packer"
             end
 
-          test: 'assert_match("tile-packer ${{steps.release.outputs.tag_name}}", shell_output("#{bin}/tile-packer --version"))'
-
+          test: 'assert_match("tile-packer #{version}", shell_output("#{bin}/tile-packer --version"))'
           target_darwin_amd64: true
           target_darwin_arm64: true
           target_linux_amd64: true
-
           update_readme_table: true
-
-          debug: false
+          debug: true
