@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/eknowles/tile-packer/compare/v1.1.0...v1.2.0) (2024-08-17)
+
+
+### Features
+
+* add brew releaser and version argument ([e2be764](https://github.com/eknowles/tile-packer/commit/e2be7640163e69852907d2c7da19b3fd997c39db))
+
 ## [1.1.0](https://github.com/eknowles/tile-packer/compare/v1.0.0...v1.1.0) (2024-08-16)
 
 
