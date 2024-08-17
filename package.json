@@ -1,5 +1,5 @@
 {
-  "name": "tile-packer",
+  "name": "tilepack",
   "version": "1.2.0",
   "main": "index.js",
   "devDependencies": {

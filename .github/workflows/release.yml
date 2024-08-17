@@ -49,7 +49,7 @@ jobs:
           bun-version: latest
 
       - name: Set version
-        run: echo "VERSION=${{ needs.release.outputs.tag_name }}" >> $GITHUB_ENV
+        run: echo "VERSION=${{ needs.release.outputs.tag_name#v }}" >> $GITHUB_ENV
 
       - name: Build and package artifacts
         run: |
@@ -61,13 +61,13 @@ jobs:
           )
 
           for target in "${!targets[@]}"; do
-            bun build --compile --minify --target="${targets[$target]}" src/cli.ts --outfile "tile-packer"
-          
+            bun build --compile --minify --target="${targets[$target]}" src/cli.ts --outfile "tilepack"
+
             if [[ "$target" == "windows-amd64" ]]; then
-              mv tile-packer tile-packer.exe
-              tar -czvf "tile-packer-${VERSION}-${target}.tar.gz" tile-packer.exe
+              mv tilepack tilepack.exe
+              tar -czvf "tilepack-${VERSION}-${target}.tar.gz" tilepack.exe
             else
-              tar -czvf "tile-packer-${VERSION}-${target}.tar.gz" tile-packer
+              tar -czvf "tilepack-${VERSION}-${target}.tar.gz" tilepack
             fi
           done
 
@@ -76,10 +76,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           gh release upload ${{ needs.release.outputs.tag_name }} \
-            tile-packer-${VERSION}-linux-x64.tar.gz \
-            tile-packer-${VERSION}-darwin-arm64.tar.gz \
-            tile-packer-${VERSION}-darwin-amd64.tar.gz \
-            tile-packer-${VERSION}-windows-amd64.tar.gz
+            tilepack-${VERSION}-linux-x64.tar.gz \
+            tilepack-${VERSION}-darwin-arm64.tar.gz \
+            tilepack-${VERSION}-darwin-amd64.tar.gz \
+            tilepack-${VERSION}-windows-amd64.tar.gz
 
   brew_release:
     name: Homebrew Release
@@ -98,15 +98,7 @@ jobs:
           github_token: ${{ secrets.RELEASE_TOKEN }}
           homebrew_owner: eknowles
           homebrew_tap: homebrew-tools
-          install: |
-            if Hardware::CPU.arm? && OS.mac?
-              bin.install "tile-packer" => "tile-packer"
-            elsif Hardware::CPU.intel? && OS.mac?
-              bin.install "tile-packer" => "tile-packer"
-            elsif OS.linux?
-              bin.install "tile-packer" => "tile-packer"
-            end
-          test: 'assert_match("tile-packer #{version}", shell_output("#{bin}/tile-packer --version"))'
+          test: 'assert_match("tilepack #{version}", shell_output("#{bin}/tilepack --version"))'
           target_darwin_amd64: true
           target_darwin_arm64: true
           target_linux_amd64: true

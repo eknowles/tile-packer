@@ -1,16 +1,16 @@
-# ❎ tile-packer ❎
+# ❎ tilepack ❎
 
 ## Installation
 
 ```bash
 brew tap eknowles/tools
-brew install tile-packer
+brew install tilepack
 ```
 
 ## Usage
 
 ```bash
-tile-packer -i <input_url> [options]
+tilepack -i <input_url> [options]
 ```
 
 ## Options
@@ -49,7 +49,7 @@ tile-packer -i <input_url> [options]
 ## Example
 
 ```bash
-tile-packer \
+tilepack \
   --input "https://example.com/tiles/{z}/{x}/{y}.png" \
   --output satellite.mbtiles \
   --minzoom 2 \

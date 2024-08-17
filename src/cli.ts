@@ -61,7 +61,7 @@ const args: CliArgs = {
 };
 
 if (args.version) {
-  console.log(`tile-packer ${pkg.version}`);
+  console.log(`tilepack ${pkg.version}`);
   process.exit(0);
 }
 
@@ -89,7 +89,7 @@ insertMetadata(
 // todo add center
 insertMetadata(db, "maxzoom", args.maxzoom.toString());
 insertMetadata(db, "minzoom", args.minzoom.toString());
-insertMetadata(db, "name", "tile-packer");
+insertMetadata(db, "name", "tilepack");
 insertMetadata(db, "type", "overlay"); // should this be baselayer?
 insertMetadata(db, "version", "1");
 insertMetadata(db, "format", args.format);
