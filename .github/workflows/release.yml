@@ -49,7 +49,10 @@ jobs:
           bun-version: latest
 
       - name: Set version
-        run: echo "VERSION=${{ needs.release.outputs.tag_name }}" | sed 's/^v//' >> $GITHUB_ENV
+        run: |
+          VERSION=${{ needs.release.outputs.tag_name }}
+          VERSION=${VERSION#v}
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build and package artifacts
         run: |
