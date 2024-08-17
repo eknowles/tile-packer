@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/eknowles/tilepack/compare/v1.2.1...v1.2.2) (2024-08-17)
+
+
+### Bug Fixes
+
+* version ([93a26d2](https://github.com/eknowles/tilepack/commit/93a26d2bde14c25f9649707269435b50debbe3b2))
+
 ## [1.2.1](https://github.com/eknowles/tile-packer/compare/v1.2.0...v1.2.1) (2024-08-17)
 
 
