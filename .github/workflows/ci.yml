@@ -1,10 +1,10 @@
 on: pull_request
 
-name: Continuous Integration
+name: CI
 
 jobs:
   testing:
-    name: Generate coverage report
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
