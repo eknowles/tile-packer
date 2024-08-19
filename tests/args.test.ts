@@ -1,9 +1,12 @@
 import { describe, it, expect } from "bun:test";
 import { parseCliArgs } from "../src/args";
 
-describe("parseCliArgs", () => {
+describe("parseArgs", () => {
   it("should parse all arguments correctly", () => {
     const input = "http://example.com/{z}/{y}/{x}?token={token}";
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     Bun.argv = [
       "node",
       "script.js",

@@ -1,21 +1,7 @@
 import { parseArgs } from "util";
+import { Args } from "./types";
 
-export interface CliArgs {
-  version: boolean;
-  help: boolean;
-  output: string;
-  input: string;
-  minzoom: number;
-  maxzoom: number;
-  bbox: string;
-  header: string[];
-  token: string;
-  retry: number;
-  format: string;
-  concurrency: number;
-}
-
-export function parseCliArgs(): CliArgs {
+export function parseCliArgs(): Args {
   const { values } = parseArgs({
     args: Bun.argv.slice(2),
     options: {

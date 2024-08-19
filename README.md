@@ -6,19 +6,32 @@ Take a XYZ tile URL and pack the tile images into a MBTiles file.
 
 ![gif](./pmtiles.gif)
 
-## Installation
+## Installation Options
 
-1. Homebrew (macOS/Linux)
-    ```bash
-    brew tap eknowles/tools
-    brew install tilepack
-    ```
-1. Download the latest release from the [releases page](https://github.com/eknowles/tilepack/releases) (Windows, macOS, Linux)
-1. Build from source (Requires [Bun](https://bun.sh/))
-    ```bash
-    git clone git@github.com:eknowles/tilepack.git
-    bun run build
-    ```
+### Homebrew (macOS/Linux)
+
+```bash
+brew tap eknowles/tools
+brew install tilepack
+```
+
+### Binary
+
+Download the latest release from the [releases page](https://github.com/eknowles/tilepack/releases) (Windows, macOS, Linux)
+
+- darwin (amd64)
+- darwin (arm64)
+- linux (x64)
+- windows (amd64)
+
+### Build from source
+
+Requires [Bun](https://bun.sh/)
+
+```bash
+git clone git@github.com:eknowles/tilepack.git
+bun run build
+```
 
 ## Example
 

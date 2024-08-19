@@ -1,8 +1,8 @@
 import { Database } from "bun:sqlite";
-import { CliArgs } from "./args";
+import { Args } from "./types";
 import { BoundingBox } from "./utils";
 
-export type DBArgs = Pick<CliArgs, "format" | "bbox" | "minzoom" | "maxzoom">;
+export type DBArgs = Pick<Args, "format" | "bbox" | "minzoom" | "maxzoom">;
 
 export function setupDatabase(
   filename: string,
