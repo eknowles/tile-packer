@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import { CliArgs } from "./args";
+import { Args } from "./types";
 import {
   BoundingBox,
   createTileUrl,
@@ -13,7 +13,7 @@ export async function processTile(
   zoom: number,
   row: number,
   column: number,
-  args: CliArgs,
+  args: Pick<Args, "input" | "token">,
   headers: Record<string, string>,
 ): Promise<void> {
   const insertTile = db.prepare(
@@ -53,7 +53,7 @@ export async function processZoomLevel(
   db: Database,
   zoom: number,
   bbox: BoundingBox,
-  args: CliArgs,
+  args: Pick<Args, "concurrency" | "input" | "token">,
   headers: Record<string, string>,
 ): Promise<void> {
   const { minColumn, maxColumn, minRow, maxRow } = zoomBox(zoom, bbox);

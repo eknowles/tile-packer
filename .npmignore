@@ -1,4 +1,8 @@
 *.lockb
 .husky/
-src/
-test.sh
+tests/
+*.sh
+.github/
+node_modules/
+*.gif
+eslint.config.mjs
