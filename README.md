@@ -4,12 +4,21 @@
 
 Take a XYZ tile URL and pack the tile images into a MBTiles file.
 
+![gif](./pmtiles.gif)
+
 ## Installation
 
-```bash
-brew tap eknowles/tools
-brew install tilepack
-```
+1. Homebrew (macOS/Linux)
+    ```bash
+    brew tap eknowles/tools
+    brew install tilepack
+    ```
+1. Download the latest release from the [releases page](https://github.com/eknowles/tilepack/releases) (Windows, macOS, Linux)
+1. Build from source (Requires [Bun](https://bun.sh/))
+    ```bash
+    git clone git@github.com:eknowles/tilepack.git
+    bun run build
+    ```
 
 ## Example
 
@@ -106,18 +115,6 @@ tilepack -i <input_url> [options]
 
 Bounding box can be created using https://norbertrenner.de/osm/bbox.html
 
-
-example output
-
-```text
-Processing zoom level 0 (2 tiles)
-Processing zoom level 1 (6 tiles)
-Processing zoom level 2 (20 tiles)
-Processing zoom level 3 (72 tiles)
-Processing zoom level 4 (272 tiles)
-Finished processing all zoom levels
-```
-
 ## Converting to PMTiles
 
 Once the MBTiles file is generated, you can convert it to a PMTiles.
@@ -126,12 +123,21 @@ Once the MBTiles file is generated, you can convert it to a PMTiles.
 pmtiles convert example.mbtiles example.pmtiles
 ```
 
-## Where to find maps
+## Where to find map tile servers
 
 You can find many tile servers tile services online, such as OSM, ArcGIS, Mapbox.
 
-Do not download tiles from a tile server without permission, read the terms of service or license agreement.
+A [google dork](https://en.wikipedia.org/wiki/Google_hacking) will help you find many tile servers such as weather radar, satellite imagery etc.
 
-## Related Projects
+Disclaimer: Do not download tiles from a tile server without permission, read the terms of service or license agreement.
 
-- https://www.allmapsoft.com/gsmd/
+## Contributing
+
+Make an issue or PR if you have any suggestions or improvements.
+
+## Alternatives
+
+- https://portfolio.techmaven.net/apps/tile-utilities/
+- https://offlinedatadownloader.techmaven.net/windows/
+- https://github.com/mapbox/mbutil
+- https://offlinedatadownloader.techmaven.net/
