@@ -80,38 +80,20 @@ tilepack -i <input_url> [options]
 
 ## Options
 
-- `-i, --input <input_url>` (required):
-  The base URL for the XYZ tiles.
-
-- `-o, --output <output_file>` (default: `output.mbtiles`):
-  The path where the MBTiles file will be saved.
-
-- `--minzoom <min_zoom>`:
-  The minimum zoom level to fetch tiles.
-
-- `--maxzoom <max_zoom>`:
-  The maximum zoom level to fetch tiles.
-
-- `--bbox <bounding_box>`:
-  The bounding box for the tile fetching in the
-  format `minLon,minLat,maxLon,maxLat`.
-
-- `--header <header>` (can be used multiple times):
-  HTTP headers to include in tile requests. Use this option for each header.
-
-- `--token <api_token>`:
-  An API token for authenticated requests. Used in `input` URL.
-
-- `--retry <retry_count>` (default: `0`):
-  The number of retry attempts for failed requests.
-
-- `--format <image_format>` (default: `png`):
-  The format of the tiles (e.g., `png`, `jpeg`).
-
-- `--concurrency <concurrent_requests>` (default: `15`):
-  The number of concurrent requests to fetch tiles.
-
-## Example
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-i, --input <input_url>` | The base URL for the XYZ tiles (required) | N/A |
+| `-o, --output <output_file>` | The path where the MBTiles file will be saved | `output.mbtiles` |
+| `--minzoom <min_zoom>` | The minimum zoom level to fetch tiles | N/A |
+| `--maxzoom <max_zoom>` | The maximum zoom level to fetch tiles | N/A |
+| `--bbox <bounding_box>` | The bounding box for the tile fetching in the format `minLon,minLat,maxLon,maxLat` | N/A |
+| `--header <header>` | HTTP headers to include in tile requests. Use this option for each header | N/A |
+| `--token <api_token>` | An API token for authenticated requests. Used in `input` URL | N/A |
+| `--retry <retry_count>` | The number of retry attempts for failed requests | `0` |
+| `--format <image_format>` | The format of the tiles (e.g., `png`, `jpeg`) | `png` |
+| `--concurrency <concurrent_requests>` | The number of concurrent requests to fetch tiles | `15` |
+| `-v, --version` | Show the version number | N/A |
+| `-h, --help` | Show this help message | N/A |
 
 Bounding box can be created using https://norbertrenner.de/osm/bbox.html
 
